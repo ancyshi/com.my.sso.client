@@ -49,7 +49,11 @@ public class ThymeleafController {
 
 			// 采用cookie的方式记录下两个sessionId
 			Cookie localSessionCookie = new Cookie("localSessionId", "cookievalue");
+			localSessionCookie.setPath("/");
+			localSessionCookie.setSecure(true);
 			Cookie globalSessionCookie = new Cookie("globalSessionId", "cookievalue");
+			globalSessionCookie.setPath("/");
+			globalSessionCookie.setSecure(true);
 			response.addCookie(globalSessionCookie);
 			response.addCookie(localSessionCookie);
 		}
