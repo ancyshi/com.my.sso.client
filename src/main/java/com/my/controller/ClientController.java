@@ -23,7 +23,7 @@ public class ClientController {
 	private Environment env;
 
 	@RequestMapping(value = "/auth/check")
-	public Long authCheck(HttpServletRequest request) throws Exception {
+	public String authCheck(HttpServletRequest request) throws Exception {
 		// 接受来自认证中心的token
 		String token = request.getParameter("token");
 		if (token == null) {
@@ -32,7 +32,8 @@ public class ClientController {
 
 		// 去server端验证token的真伪
 		checkToken(token, request);
-		return null;
+		
+		return (String)request.getAttribute("returnURL");
 	}
 
 	@RequestMapping(value = "/auth/logout")
