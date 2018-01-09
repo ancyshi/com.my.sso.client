@@ -6,6 +6,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -23,11 +24,11 @@ public class ClientController {
 	private Environment env;
 
 	@RequestMapping(value = "/auth/check")
-	public String authCheck(HttpServletRequest request) throws Exception {
+	public String authCheck(HttpServletRequest request){
 		// 接受来自认证中心的token
 		String token = request.getParameter("token");
 		if (token == null) {
-			throw new Exception("没有token!属于数据异常！");
+			return "/login";
 		}
 
 		// 去server端验证token的真伪
@@ -50,7 +51,7 @@ public class ClientController {
 
 		// 去server端的接口/server/auth/verify验证token的有效性
 		String verifyURL = "http://" + env.getProperty("sso.server") + env.getProperty("sso.server.verify");
-		HttpClient httpClient = new DefaultHttpClient();
+		HttpClient httpClient = HttpClients.custom().build();
 		// serverName作为本应用标识
 		HttpGet httpGet = new HttpGet(verifyURL + "?token=" + token + "&localId=" + request.getSession().getId());
 		try {
@@ -58,20 +59,8 @@ public class ClientController {
 			int statusCode = httpResponse.getStatusLine().getStatusCode();
 			if (statusCode == HttpStatus.OK.value()) {
 				String result = EntityUtils.toString(httpResponse.getEntity(), "utf-8");
-				// 解析json数据
-				ObjectMapper objectMapper = new ObjectMapper();
-				VerifyBean verifyResult = objectMapper.readValue(result, VerifyBean.class);
-				// 验证通过,应用返回浏览器需要验证的页面
-				if (verifyResult.getRet().equals("0")) {
-					Auth auth = new Auth();
-					auth.setUserId(verifyResult.getUserId());
-					auth.setUsername(verifyResult.getUsername());
-					auth.setGlobalId(verifyResult.getGlobalId());
-					request.getSession().setAttribute("auth", auth);
-					// 建立本地会话，返回到请求页面
-					String returnURL = request.getParameter("returnURL");
-					return "redirect:http://" + returnURL;
-				}
+				
+				return "redirect:http://" + result;
 			}
 		} catch (Exception e) {
 			// 返回登录页面

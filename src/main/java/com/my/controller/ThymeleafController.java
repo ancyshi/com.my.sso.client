@@ -1,6 +1,8 @@
 package com.my.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +14,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -19,8 +22,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.my.util.LocalSessions;
+import com.my.util.ToolsUtil;
 
 @Controller
 @RequestMapping(value = "/thymeleaf")
@@ -33,22 +38,36 @@ public class ThymeleafController {
 	public String pageLogin(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		HttpSession session = request.getSession();
+		
+		
+		String app1SessionId = ToolsUtil.getCookieValueByName(request,"app1SessionId");
+		
+		String returnURL = "/login";
 
 		// 如果localSeeionId不存在，就重定向到SSOServer的接口/sso/page/login
-		if (session == null || session.getId() == null) {
+		if (app1SessionId == null) {
 
 			// 去server验证是否登陆,没有登录的话，server会给浏览器一个登录界面，如果登录了，会返回一个token
-			redirectToServer(request, "localhost:8077", "/sso/page/login");
+			JSONObject resultObj = redirectToServer(request, "localhost:8077", "/sso/page/login");
 
+			
+			if (resultObj.get("tokenInfo") == null) {
+				return resultObj.getString("returnURL");
+			}
 			// 拿着token去验证是否正确，调用server的接口是：/sso/auth/verify
-
+			JSONObject tokenVerify = redirectToServer(request,"localhost:8077", "/sso/auth/verify");
+			
+			if (!tokenVerify.getBooleanValue("tokenVerify")) {
+				return tokenVerify.getString("returnURL");
+			}
+			
 			// 验证成功之后生成局部httpSession
 			session = request.getSession(true);
 			String localSessionId = session.getId();
 			LocalSessions.addSession(localSessionId, session);
 
 			// 采用cookie的方式记录下两个sessionId
-			Cookie localSessionCookie = new Cookie("localSessionId", "cookievalue");
+			Cookie localSessionCookie = new Cookie("app1SessionId", "cookievalue");
 			localSessionCookie.setPath("/");
 			localSessionCookie.setSecure(true);
 			Cookie globalSessionCookie = new Cookie("globalSessionId", "cookievalue");
@@ -58,45 +77,42 @@ public class ThymeleafController {
 			response.addCookie(localSessionCookie);
 		}
 
-		return "/app1";
+		return returnURL;
 
 	}
 
 	// "/sso/page/login"
-	private void redirectToServer(HttpServletRequest request, String server, String address)
+	private JSONObject redirectToServer(HttpServletRequest request, String server, String address)
 			throws ClientProtocolException, IOException {
+		
+		JSONObject resultObj = new JSONObject();
 		String verifyURL = "http://" + server + address;
 
-		// 把Globalsessionid传给server,returnURL传入用于重定向
-		HttpClient httpClient = new DefaultHttpClient();
-		// serverName作为本应用标识
+		HttpClient httpClient = HttpClients.custom().build();
+		
 		HttpGet httpGet = new HttpGet(verifyURL + "?glocalSession=" + request.getSession());
 		try {
 			HttpResponse httpResponse = httpClient.execute(httpGet);
 			int statusCode = httpResponse.getStatusLine().getStatusCode();
 			if (statusCode == HttpStatus.OK.value()) {
+				
 				String result = EntityUtils.toString(httpResponse.getEntity(), "utf-8");
-				// 解析json数据
-				ObjectMapper objectMapper = new ObjectMapper();
-				VerifyBean verifyResult = objectMapper.readValue(result, VerifyBean.class);
-				// 验证通过,应用返回浏览器需要验证的页面
-				if (verifyResult.getRet().equals("0")) {
-					Auth auth = new Auth();
-					auth.setUserId(verifyResult.getUserId());
-					auth.setUsername(verifyResult.getUsername());
-					auth.setGlobalId(verifyResult.getGlobalId());
-					request.getSession().setAttribute("auth", auth);
-					// 建立本地会话，返回到请求页面
-					String returnURL = request.getParameter("returnURL");
-					return "redirect:http://" + returnURL;
-				}
+				
+				 resultObj = JSON.parseObject(result);
+				return resultObj;
+			
 			}
 		} catch (Exception e) {
 			// 返回登录页面
 			String loginURL = "/login";
-			return "redirect:" + loginURL;
+			resultObj.put("returnURL", loginURL);
+			return resultObj;
 		}
+		return resultObj;
 
 	}
+	
+
+
 
 }
