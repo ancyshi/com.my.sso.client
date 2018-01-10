@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -36,7 +37,7 @@ public class ThymeleafController {
 
 		String app1SessionId = ToolsUtil.getCookieValueByName(request, "app1SessionId");
 
-		String returnURL = (String) request.getAttribute("returnURL");
+		// String returnURL = (String) request.getAttribute("returnURL");
 
 		// 如果localSeeionId不存在，就重定向到SSOServer的接口/sso/page/login
 		if (app1SessionId == null) {
@@ -75,7 +76,7 @@ public class ThymeleafController {
 			// response.addCookie(localSessionCookie);
 		}
 
-		return returnURL;
+		return "/app1";
 
 	}
 
@@ -121,8 +122,8 @@ public class ThymeleafController {
 	}
 
 	@RequestMapping(value = "/login1")
-	public String login1(HttpServletRequest request, HttpServletResponse response) throws Exception {
-
+	public String login1(Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		model.addAttribute("returnURL", "app1");
 		return "/login";
 
 	}
