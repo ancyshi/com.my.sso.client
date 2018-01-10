@@ -40,7 +40,7 @@ public class ThymeleafController {
 		// 如果localSeeionId不存在，就重定向到SSOServer的接口/sso/page/login
 		if (app1SessionId == null) {
 			// 重定向到认证中心
-			response.sendRedirect("http://localhost:8077/sso/page/login?returnURL=app1");
+			response.sendRedirect("http://localhost:8077/server/page/login?returnURL=app1");
 			// // 去server验证是否登陆,没有登录的话，server会给浏览器一个登录界面，如果登录了，会返回一个token
 			// JSONObject resultObj = redirectToServer(request,
 			// "localhost:8077", "/sso/page/login");
