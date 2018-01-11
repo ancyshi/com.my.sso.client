@@ -55,6 +55,14 @@
             <version>4.3.1</version>
         </dependency>
         
+        <!-- redis 依赖 -->
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-redis -->
+		<dependency>
+   		 <groupId>org.springframework.boot</groupId>
+   		 <artifactId>spring-boot-starter-redis</artifactId>
+   		 <version>1.4.3.RELEASE</version>
+		</dependency>
+        
 		<dependency>
 		    <groupId>org.apache.maven.plugins</groupId>
 		    <artifactId>maven-resources-plugin</artifactId>
