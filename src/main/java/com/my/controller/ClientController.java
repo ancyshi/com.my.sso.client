@@ -30,7 +30,7 @@ public class ClientController {
 	@RequestMapping(value = "/auth/check")
 	public String authCheck(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		// 接受来自认证中心的token
-		String token = request.getParameter("tokenInfo");
+		String token = request.getParameter("token");
 		if (token == null) {
 			return "/login";
 		}
