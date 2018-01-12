@@ -7,10 +7,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
 @Entity
 @Table(name = "token_info")
-public class TokenInfo implements Serializable  {
-	
+public class TokenInfo implements Serializable {
+
 	@Id
 	// id自动生成
 	@GeneratedValue
@@ -58,11 +59,8 @@ public class TokenInfo implements Serializable  {
 
 	@Override
 	public String toString() {
-		return "{\"userId\":\"" + userId + "\",\"userName\":\"" + userName
-				+ "\",\"ssoClient\":\"" + ssoClient
+		return "{\"userId\":\"" + userId + "\",\"userName\":\"" + userName + "\",\"ssoClient\":\"" + ssoClient
 				+ "\",\"globalSessionId\":\"" + globalSessionId + "\"} ";
 	}
-	
-	
 
 }
