@@ -12,7 +12,7 @@
   </head>
   
   <body>
-   <form th:action="@{/thymeleaf/login(returnURL=${returnURL})}" method="post">
+   <form th:action="@{/server/auth/login(returnURL=${returnURL})}" method="post">
 		用户：
 		<input type="text" name="user">
 		<br />

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +22,7 @@ import com.my.model.Student;
 import com.my.model.TokenInfo;
 import com.my.util.ToolsUtil;
 
-@RestController
+@Controller
 @RequestMapping(value = "/thymeleaf")
 public class ThymeleafController {
 

@@ -2,6 +2,7 @@ package com.my.controller;
 
 import java.io.IOException;
 
+import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,6 +13,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.codehaus.plexus.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -20,12 +22,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.alibaba.fastjson.JSONObject;
 import com.my.util.LocalSessions;
+import com.my.util.MyHttpUtils;
 
 @Controller
 @RequestMapping(value = "/client")
 public class ClientController {
+	
 	@Autowired
 	private Environment env;
+	
+	private MyHttpUtils myHttpUtils = new MyHttpUtils();
 
 	@RequestMapping(value = "/auth/check")
 	public String authCheck(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -36,7 +42,10 @@ public class ClientController {
 		}
 
 		// 去server端验证token的真伪
-		checkToken(token, request);
+		String tokenInfoStr = checkToken(token, request);
+		if (StringUtils.isEmpty(tokenInfoStr)) {
+			return "/login";
+		}
 
 		// 如有效简历本地会话
 		HttpSession session = request.getSession(true);
@@ -72,24 +81,20 @@ public class ClientController {
 
 		// 去server端的接口/server/auth/verify验证token的有效性
 		String verifyURL = "http://" + env.getProperty("sso.server") + env.getProperty("sso.server.verify");
-		HttpClient httpClient = HttpClients.custom().build();
 		// serverName作为本应用标识
-		HttpGet httpGet = new HttpGet(verifyURL + "?token=" + token + "&localId=" + request.getSession().getId());
+		String tokenInfo = "";
 		try {
-			HttpResponse httpResponse = httpClient.execute(httpGet);
-			int statusCode = httpResponse.getStatusLine().getStatusCode();
-			if (statusCode == HttpStatus.OK.value()) {
-				String result = EntityUtils.toString(httpResponse.getEntity(), "utf-8");
-
-				return "redirect:http://" + result;
-			}
+			 MyHttpUtils myHttpUtils = new MyHttpUtils();
+			JSONObject reqObj = new JSONObject();
+			reqObj.put("token", token);
+			 tokenInfo = myHttpUtils.httpPostJsonObj(verifyURL,reqObj,"utf-8");
 		} catch (Exception e) {
 			// 返回登录页面
 			String loginURL = "/login";
 			return "redirect:" + loginURL;
 		}
 
-		return null;
+		return tokenInfo;
 
 	}
 }
