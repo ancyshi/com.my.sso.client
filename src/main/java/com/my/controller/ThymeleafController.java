@@ -50,6 +50,23 @@ public class ThymeleafController {
 		return "/app1";
 
 	}
+	
+	@RequestMapping(value = "/app2")
+	public String pageLogin2(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+		String app2SessionId = ToolsUtil.getCookieValueByName(request, "app2SessionId");
+
+		// 如果localSeeionId不存在，就重定向到SSOServer的接口/sso/page/login
+		if (app2SessionId == null) {
+			// 重定向到认证中心
+			response.sendRedirect("http://localhost:8077/server/page/login?returnURL=app2");
+
+		}
+
+		return "/app2";
+
+	}
+	
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String login(HttpServletRequest request, HttpServletResponse response) throws Exception {

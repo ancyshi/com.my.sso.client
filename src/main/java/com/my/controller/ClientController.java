@@ -47,24 +47,26 @@ public class ClientController {
 			return "/login";
 		}
 
+		JSONObject tokenInfo = JSONObject.parseObject(tokenInfoStr);
 		// 如有效简历本地会话
 		HttpSession session = request.getSession(true);
 		String localSessionId = session.getId();
 		LocalSessions.addSession(localSessionId, session);
 
 		// 采用cookie的方式记录下两个sessionId
-		Cookie localSessionCookie = new Cookie("app1SessionId", "cookievalue");
+		Cookie localSessionCookie = new Cookie("app1SessionId", session.getId());
 		localSessionCookie.setPath("/");
-		localSessionCookie.setSecure(true);
-		Cookie globalSessionCookie = new Cookie("globalSessionId", "cookievalue");
+//		localSessionCookie.setSecure(true);
+		Cookie globalSessionCookie = new Cookie("globalSessionId", tokenInfo.getString("globalSessionId"));
 		globalSessionCookie.setPath("/");
-		globalSessionCookie.setSecure(true);
+//		globalSessionCookie.setSecure(true);
 		response.addCookie(globalSessionCookie);
 		response.addCookie(localSessionCookie);
 
-		response.sendRedirect("http://localhost:8077" + request.getAttribute("returnURL"));
+		// 验证token之后，重定向到请求的页面
+		response.sendRedirect("http://localhost:8078/thymeleaf/"+request.getParameter("returnURL"));
 
-		return (String) request.getAttribute("returnURL");
+		return null;
 	}
 
 	@RequestMapping(value = "/auth/logout")
