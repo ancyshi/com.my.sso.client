@@ -2,22 +2,15 @@ package com.my.controller;
 
 import java.io.IOException;
 
-import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
 import org.codehaus.plexus.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -28,10 +21,10 @@ import com.my.util.MyHttpUtils;
 @Controller
 @RequestMapping(value = "/client")
 public class ClientController {
-	
+
 	@Autowired
 	private Environment env;
-	
+
 	private MyHttpUtils myHttpUtils = new MyHttpUtils();
 
 	@RequestMapping(value = "/auth/check")
@@ -43,10 +36,10 @@ public class ClientController {
 		}
 
 		// 去server端验证token的真伪
-		String tokenInfoStr= "";
+		String tokenInfoStr = "";
 		try {
 			tokenInfoStr = checkToken(token, request);
-		}catch (Exception e) {
+		} catch (Exception e) {
 			return "/login";
 		}
 		if (StringUtils.isEmpty(tokenInfoStr)) {
@@ -60,7 +53,7 @@ public class ClientController {
 		LocalSessions.addSession(localSessionId, session);
 
 		// 采用cookie的方式记录下两个sessionId
-		Cookie localSessionCookie = new Cookie(request.getParameter("returnURL") +"SessionId", session.getId());
+		Cookie localSessionCookie = new Cookie(request.getParameter("returnURL") + "SessionId", session.getId());
 		localSessionCookie.setPath("/");
 		Cookie globalSessionCookie = new Cookie("globalSessionId", tokenInfo.getString("globalSessionId"));
 		globalSessionCookie.setPath("/");
@@ -68,7 +61,7 @@ public class ClientController {
 		response.addCookie(localSessionCookie);
 
 		// 验证token之后，重定向到请求的页面
-		response.sendRedirect("http://localhost:8078/thymeleaf/"+request.getParameter("returnURL"));
+		response.sendRedirect("http://localhost:8078/thymeleaf/" + request.getParameter("returnURL"));
 		return null;
 	}
 
@@ -85,10 +78,10 @@ public class ClientController {
 		String verifyURL = "http://" + env.getProperty("sso.server") + env.getProperty("sso.server.verify");
 		// serverName作为本应用标识
 		String tokenInfo = "";
-			 MyHttpUtils myHttpUtils = new MyHttpUtils();
-			JSONObject reqObj = new JSONObject();
-			reqObj.put("token", token);
-			 tokenInfo = myHttpUtils.httpPostJsonObj(verifyURL,reqObj,"utf-8");
+		MyHttpUtils myHttpUtils = new MyHttpUtils();
+		JSONObject reqObj = new JSONObject();
+		reqObj.put("token", token);
+		tokenInfo = myHttpUtils.httpPostJsonObj(verifyURL, reqObj, "utf-8");
 
 		return tokenInfo;
 
