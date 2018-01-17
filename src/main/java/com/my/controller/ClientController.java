@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClients;
@@ -42,7 +43,12 @@ public class ClientController {
 		}
 
 		// 去server端验证token的真伪
-		String tokenInfoStr = checkToken(token, request);
+		String tokenInfoStr= "";
+		try {
+			tokenInfoStr = checkToken(token, request);
+		}catch (Exception e) {
+			return "/login";
+		}
 		if (StringUtils.isEmpty(tokenInfoStr)) {
 			return "/login";
 		}
@@ -54,18 +60,15 @@ public class ClientController {
 		LocalSessions.addSession(localSessionId, session);
 
 		// 采用cookie的方式记录下两个sessionId
-		Cookie localSessionCookie = new Cookie("app1SessionId", session.getId());
+		Cookie localSessionCookie = new Cookie(request.getParameter("returnURL") +"SessionId", session.getId());
 		localSessionCookie.setPath("/");
-//		localSessionCookie.setSecure(true);
 		Cookie globalSessionCookie = new Cookie("globalSessionId", tokenInfo.getString("globalSessionId"));
 		globalSessionCookie.setPath("/");
-//		globalSessionCookie.setSecure(true);
 		response.addCookie(globalSessionCookie);
 		response.addCookie(localSessionCookie);
 
 		// 验证token之后，重定向到请求的页面
 		response.sendRedirect("http://localhost:8078/thymeleaf/"+request.getParameter("returnURL"));
-
 		return null;
 	}
 
@@ -76,25 +79,16 @@ public class ClientController {
 	}
 
 	// 这个方法有出入
-	private String checkToken(String token, HttpServletRequest request) {
+	private String checkToken(String token, HttpServletRequest request) throws ClientProtocolException, IOException {
 		// 向认证中心发送验证token请求
-		// String verifyURL = "http://" + server +
-		// PropertiesConfigUtil.getProperty("sso.server.verify");
-
 		// 去server端的接口/server/auth/verify验证token的有效性
 		String verifyURL = "http://" + env.getProperty("sso.server") + env.getProperty("sso.server.verify");
 		// serverName作为本应用标识
 		String tokenInfo = "";
-		try {
 			 MyHttpUtils myHttpUtils = new MyHttpUtils();
 			JSONObject reqObj = new JSONObject();
 			reqObj.put("token", token);
 			 tokenInfo = myHttpUtils.httpPostJsonObj(verifyURL,reqObj,"utf-8");
-		} catch (Exception e) {
-			// 返回登录页面
-			String loginURL = "/login";
-			return "redirect:" + loginURL;
-		}
 
 		return tokenInfo;
 

@@ -44,6 +44,7 @@ public class ThymeleafController {
 		if (app1SessionId == null) {
 			// 重定向到认证中心
 			response.sendRedirect("http://localhost:8077/server/page/login?returnURL=app1");
+			return null;
 
 		}
 
@@ -60,6 +61,7 @@ public class ThymeleafController {
 		if (app2SessionId == null) {
 			// 重定向到认证中心
 			response.sendRedirect("http://localhost:8077/server/page/login?returnURL=app2");
+			return null;
 
 		}
 
