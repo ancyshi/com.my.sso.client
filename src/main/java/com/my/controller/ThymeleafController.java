@@ -41,11 +41,12 @@ public class ThymeleafController {
 		String app1SessionId = ToolsUtil.getCookieValueByName(request, "app1SessionId");
 
 		// 如果localSeeionId不存在，就重定向到SSOServer的接口/sso/page/login
+		
+		// todo,这里不能仅仅使用空值来判断，存在问题。
 		if (app1SessionId == null) {
 			// 重定向到认证中心
 			response.sendRedirect("http://localhost:8077/server/page/login?returnURL=app1");
 			return null;
-
 		}
 
 		return "/app1";

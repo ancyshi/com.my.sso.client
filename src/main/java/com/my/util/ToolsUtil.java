@@ -6,6 +6,8 @@ import java.util.Map;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.util.CollectionUtils;
+
 public class ToolsUtil {
 	
 	/**
@@ -38,12 +40,6 @@ public class ToolsUtil {
 
 	}
 
-	 
-
-	 
-
-	 
-
 	/**
 
 	 * 将cookie封装到Map里面
@@ -73,5 +69,23 @@ public class ToolsUtil {
 	    return cookieMap;
 
 	}
+	
+	public static String addressAppend(String ip, String port, Map<String,Object> params) {
+		
+		StringBuffer address = new StringBuffer();
+		address.append("http://").append(ip).append(":").append(port);
+		
+		if(!params.isEmpty()){
+			address.append("?");
+			for (Map.Entry<String,Object> entry : params.entrySet()) {  
+				address.append(entry.getKey()).append("=").append(entry.getValue());
+			}
+			
+		}
+		
+		return address.toString();
+		
+	}
+	
 
 }
