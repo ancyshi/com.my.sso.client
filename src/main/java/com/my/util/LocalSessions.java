@@ -5,6 +5,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.cache.annotation.*;
+
 public class LocalSessions {
 	// 存放所有局部会话
 	private static Map<String, HttpSession> sessions = new HashMap<String, HttpSession>();
@@ -21,5 +23,6 @@ public class LocalSessions {
 	public static HttpSession getSession(String sessionId) {
 		return sessions.get(sessionId);
 	}
-
+	
+	
 }

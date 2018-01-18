@@ -60,6 +60,8 @@ public class ClientController {
 		// 如有效简历本地会话
 		HttpSession session = request.getSession(true);
 		String localSessionId = session.getId();
+		
+		// todo
 		LocalSessions.addSession(localSessionId, session);
 
 		// 采用cookie的方式记录下两个sessionId
