@@ -1,6 +1,8 @@
 package com.my.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.alibaba.fastjson.JSONObject;
 import com.my.util.LocalSessions;
 import com.my.util.MyHttpUtils;
+import com.my.util.ToolsUtil;
 
 @Controller
 @RequestMapping(value = "/client")
@@ -68,7 +71,9 @@ public class ClientController {
 		response.addCookie(localSessionCookie);
 
 		// 验证token之后，重定向到请求的页面
-		response.sendRedirect("http://localhost:8078/thymeleaf/"+request.getParameter("returnURL"));
+		String redirectURL = ToolsUtil.addressAppend("localhost", "8078","/thymeleaf/"+request.getParameter("returnURL"), null);
+		response.sendRedirect(redirectURL);
+//		response.sendRedirect("http://localhost:8078/thymeleaf/"+request.getParameter("returnURL"));
 		return null;
 	}
 

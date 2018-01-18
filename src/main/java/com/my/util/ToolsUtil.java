@@ -69,21 +69,20 @@ public class ToolsUtil {
 	    return cookieMap;
 
 	}
-	
-	public static String addressAppend(String ip, String port, Map<String,Object> params) {
+public static String addressAppend(String ip, String port,String address, Map<String,Object> params) {
 		
-		StringBuffer address = new StringBuffer();
-		address.append("http://").append(ip).append(":").append(port);
+		StringBuffer addressURL = new StringBuffer();
+		addressURL.append("http://").append(ip).append(":").append(port).append(address);
 		
-		if(!params.isEmpty()){
-			address.append("?");
+		if(!CollectionUtils.isEmpty(params)){
+			addressURL.append("?");
 			for (Map.Entry<String,Object> entry : params.entrySet()) {  
-				address.append(entry.getKey()).append("=").append(entry.getValue());
+				addressURL.append(entry.getKey()).append("=").append(entry.getValue()).append("&");
 			}
-			
+			addressURL.deleteCharAt(addressURL.length()-1);
 		}
 		
-		return address.toString();
+		return addressURL.toString();
 		
 	}
 	
