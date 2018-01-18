@@ -16,4 +16,7 @@ public interface AbstractSession {
 	// 根据id得到session
 	public HttpSession getSession(String sessionId);
 
+	// 生成session
+	public MySession generateSession(String sessionId, HttpSession session);
+
 }

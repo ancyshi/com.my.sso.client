@@ -2,7 +2,7 @@ package com.my.factory;
 
 import javax.servlet.http.HttpSession;
 
-public class LocalSession implements AbstractSession {
+public class LocalSession extends MySession implements AbstractSession {
 
 	@Override
 	public void addSession(String sessionId, HttpSession session) {
@@ -18,6 +18,12 @@ public class LocalSession implements AbstractSession {
 	@Override
 	public HttpSession getSession(String sessionId) {
 		return sessions.get(sessionId);
+	}
+
+	@Override
+	public LocalSession generateSession(String sessionId, HttpSession session) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
