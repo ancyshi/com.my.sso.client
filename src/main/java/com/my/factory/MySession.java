@@ -23,5 +23,17 @@ public class MySession {
 	public void setHttpSession(HttpSession httpSession) {
 		this.httpSession = httpSession;
 	}
+	
 
+	public MySession() {
+		super();
+	}
+
+	public MySession(String sessionIdStr, HttpSession httpSession) {
+		super();
+		this.sessionIdStr = sessionIdStr;
+		this.httpSession = httpSession;
+	}
+
+	
 }
