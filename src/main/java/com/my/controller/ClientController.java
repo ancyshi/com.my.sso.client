@@ -1,8 +1,6 @@
 package com.my.controller;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
@@ -10,16 +8,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
 import org.codehaus.plexus.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -28,22 +20,22 @@ import com.my.cache.CookieCache;
 import com.my.factory.AbstractFactory;
 import com.my.factory.LocalSession;
 import com.my.factory.SessionFactory;
-import com.my.util.LocalSessions;
+import com.my.model.CookieId;
 import com.my.util.MyHttpUtils;
 import com.my.util.ToolsUtil;
 
 @Controller
 @RequestMapping(value = "/client")
 public class ClientController {
-	
+
 	@Autowired
 	private Environment env;
-	
+
 	@Resource
 	private CookieCache cookieCache;
-	
+
 	private AbstractFactory abstractFactory = new SessionFactory();
-	
+
 	private MyHttpUtils myHttpUtils = new MyHttpUtils();
 
 	@RequestMapping(value = "/auth/check")
@@ -55,10 +47,10 @@ public class ClientController {
 		}
 
 		// 去server端验证token的真伪
-		String tokenInfoStr= "";
+		String tokenInfoStr = "";
 		try {
 			tokenInfoStr = checkToken(token, request);
-		}catch (Exception e) {
+		} catch (Exception e) {
 			return "/login";
 		}
 		if (StringUtils.isEmpty(tokenInfoStr)) {
@@ -69,14 +61,14 @@ public class ClientController {
 		// 如有效简历本地会话
 		HttpSession session = request.getSession(true);
 		String localSessionId = session.getId();
-		
+
 		// todo
-//		LocalSessions.addSession(localSessionId, session);
+		// LocalSessions.addSession(localSessionId, session);
 		LocalSession localSession = (LocalSession) abstractFactory.generateSession(localSessionId, session);
 		LocalSession.localSessionMap.put(localSessionId, localSession.getHttpSession());
-		
+
 		// 采用cookie的方式记录下两个sessionId
-		Cookie localSessionCookie = new Cookie(request.getParameter("returnURL") +"SessionId", session.getId());
+		Cookie localSessionCookie = new Cookie(request.getParameter("returnURL") + "SessionId", session.getId());
 		localSessionCookie.setPath("/");
 		localSessionCookie.setMaxAge(-1);
 		Cookie globalSessionCookie = new Cookie("globalSessionId", tokenInfo.getString("globalSessionId"));
@@ -84,19 +76,24 @@ public class ClientController {
 		globalSessionCookie.setMaxAge(-1);
 		response.addCookie(globalSessionCookie);
 		response.addCookie(localSessionCookie);
-		
-		cookieCache.add(request.getParameter("returnURL") +"SessionId", localSessionCookie);
-		cookieCache.add("globalSessionId", globalSessionCookie);
-		
+
+		CookieId localCookieId = new CookieId();
+		localCookieId.setCookiesId(localSession.getSessionIdStr());
+		cookieCache.add(request.getParameter("returnURL") + "SessionId", localCookieId);
+
+		CookieId globalCookieId = new CookieId();
+		localCookieId.setCookiesId(tokenInfo.getString("globalSessionId"));
+		cookieCache.add("globalSessionId", globalCookieId);
 
 		// 验证token之后，重定向到请求的页面
-		String redirectURL = ToolsUtil.addressAppend("localhost", "8078","/thymeleaf/"+request.getParameter("returnURL"), null);
+		String redirectURL = ToolsUtil.addressAppend("localhost", "8078",
+				"/thymeleaf/" + request.getParameter("returnURL"), null);
 		response.sendRedirect(redirectURL);
 		return null;
 	}
 
 	@RequestMapping(value = "/auth/logout")
-	public Long authLogout(JSONObject request) throws Exception {
+	public Long authLogout(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		return null;
 	}
@@ -108,10 +105,10 @@ public class ClientController {
 		String verifyURL = "http://" + env.getProperty("sso.server") + env.getProperty("sso.server.verify");
 		// serverName作为本应用标识
 		String tokenInfo = "";
-			 MyHttpUtils myHttpUtils = new MyHttpUtils();
-			 JSONObject reqObj = new JSONObject();
-			 reqObj.put("token", token);
-			 tokenInfo = myHttpUtils.httpPostJsonObj(verifyURL,reqObj,"utf-8");
+		MyHttpUtils myHttpUtils = new MyHttpUtils();
+		JSONObject reqObj = new JSONObject();
+		reqObj.put("token", token);
+		tokenInfo = myHttpUtils.httpPostJsonObj(verifyURL, reqObj, "utf-8");
 
 		return tokenInfo;
 

@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,7 +20,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.my.cache.CookieCache;
 import com.my.cache.StudentCache;
 import com.my.cache.TokenUtil;
-import com.my.model.TokenInfo;
 import com.my.util.ToolsUtil;
 
 @Controller
@@ -36,7 +34,7 @@ public class ThymeleafController {
 
 	@Resource
 	private TokenUtil tokenUtil;
-	
+
 	@Resource
 	private CookieCache cookieCache;
 
@@ -103,18 +101,12 @@ public class ThymeleafController {
 
 	@RequestMapping(value = "/redis")
 	public void redis(@RequestBody JSONObject record) throws Exception {
-		// Student student = JSONObject.toJavaObject(record, Student.class);
-		// studentCache.add(token, student);
-		//
-		// studentCache.add(token + "1", student);
 
 		// 产生临时的token
-		TokenInfo tokenInfo = new TokenInfo();
-		tokenInfo.setGlobalSessionId("2323432");
-		// tokenInfo.setUserId(123l);
-		tokenInfo.setUserName("zhsngsa");
-		tokenInfo.setSsoClient("ef");
-		String result = tokenUtil.setToken(token, tokenInfo);
+		String aString = "aa";
+		String valString = "feafe";
+		cookieCache.jedisAdd(aString, valString);
+		String aValue = cookieCache.jedisGet(aString);
 		return;
 
 	}
