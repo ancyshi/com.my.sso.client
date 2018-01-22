@@ -1,54 +1,61 @@
 package com.my.factory;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpSession;
-
 /**
  * 集体产品
+ * 
  * @author by_ww
  *
  */
 public class LocalSession implements AbstractSession {
-	
-	public static Map<String, HttpSession> localSessionMap = new HashMap<String, HttpSession>();
 
-	public String sessionIdStr;
+	// public static Map<String, HttpSession> localSessionMap = new
+	// HashMap<String, HttpSession>();
 
-	public HttpSession httpSession;
+	private String sessionIdStr;
 
-	public String getSessionIdStr() {
-		return sessionIdStr;
+	private String userName;
+
+	private String passWord;
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getPassWord() {
+		return passWord;
+	}
+
+	public void setPassWord(String passWord) {
+		this.passWord = passWord;
 	}
 
 	public void setSessionIdStr(String sessionIdStr) {
 		this.sessionIdStr = sessionIdStr;
 	}
 
-	public HttpSession getHttpSession() {
-		return httpSession;
+	public String getSessionIdStr() {
+		return sessionIdStr;
 	}
 
-	public void setHttpSession(HttpSession httpSession) {
-		this.httpSession = httpSession;
-	}
-
-
-	
 	public LocalSession() {
 		super();
 	}
 
-	public LocalSession(String sessionIdStr, HttpSession httpSession) {
+	public LocalSession(String sessionIdStr, String userName, String passWord) {
 		super();
 		this.sessionIdStr = sessionIdStr;
-		this.httpSession = httpSession;
+		this.userName = userName;
+		this.passWord = passWord;
 	}
 
 	@Override
-	public LocalSession generateSession(String sessionId, HttpSession session) {
-		return new LocalSession(sessionId,session);
+	public String toString() {
+		return "{\"sessionIdStr\":\"" + sessionIdStr + "\", \"userName\":\"" + userName + "\", \"passWord\":\""
+				+ passWord + "\"} ";
 	}
 
 }

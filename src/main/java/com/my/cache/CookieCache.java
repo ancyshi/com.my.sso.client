@@ -2,6 +2,7 @@ package com.my.cache;
 
 import javax.annotation.Resource;
 
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -35,7 +36,7 @@ public class CookieCache {
 	// @CachePut(key = "#key", value = "cookie")
 	public Boolean jedisAdd(String key, String value) {
 		Jedis jedis = jedisPool.getResource();
-		jedis.set(key, value);
+		jedis.setex(key, 60, value);
 		return true;
 	}
 
@@ -43,6 +44,12 @@ public class CookieCache {
 		Jedis jedis = jedisPool.getResource();
 		String value = jedis.get(key);
 		return value;
+	}
+
+	@CacheEvict(value = "cookie", key = "#key")
+	public void delete(String key) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

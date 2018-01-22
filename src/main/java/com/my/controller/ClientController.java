@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.alibaba.fastjson.JSONObject;
 import com.my.cache.CookieCache;
+import com.my.cache.LocalSessionCache;
 import com.my.factory.AbstractFactory;
 import com.my.factory.LocalSession;
 import com.my.factory.SessionFactory;
@@ -33,6 +34,9 @@ public class ClientController {
 
 	@Resource
 	private CookieCache cookieCache;
+
+	@Resource
+	private LocalSessionCache localSessionCache;
 
 	private AbstractFactory abstractFactory = new SessionFactory();
 
@@ -64,11 +68,23 @@ public class ClientController {
 
 		// todo
 		// LocalSessions.addSession(localSessionId, session);
-		LocalSession localSession = (LocalSession) abstractFactory.generateSession(localSessionId, session);
-		LocalSession.localSessionMap.put(localSessionId, localSession.getHttpSession());
+		// LocalSession localSession = (LocalSession)
+		// abstractFactory.generateSession(localSessionId, session);
+		LocalSession localSession = (LocalSession) abstractFactory.generateSession();
+		localSession.setSessionIdStr(localSessionId);
+		localSession.setUserName(tokenInfo.getString("userName"));
+		localSession.setPassWord(tokenInfo.getString("passWord"));
+		try {
+			localSessionCache.cachePut(localSessionId, localSession);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// LocalSession.localSessionMap.put(localSessionId,
+		// localSession.getHttpSession());
 
 		// 采用cookie的方式记录下两个sessionId
-		Cookie localSessionCookie = new Cookie(request.getParameter("returnURL") + "SessionId", session.getId());
+		Cookie localSessionCookie = new Cookie(request.getParameter("returnURL") + "SessionId", localSessionId);
 		localSessionCookie.setPath("/");
 		localSessionCookie.setMaxAge(-1);
 		Cookie globalSessionCookie = new Cookie("globalSessionId", tokenInfo.getString("globalSessionId"));
@@ -94,6 +110,11 @@ public class ClientController {
 
 	@RequestMapping(value = "/auth/logout")
 	public Long authLogout(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String app1SessionId = ToolsUtil.getCookieValueByName(request, "app1SessionId");
+		LocalSession localSession = new LocalSession();
+		// localSession.deleteSession(app1SessionId);
+
+		// 再删除其他的登录信息
 
 		return null;
 	}
