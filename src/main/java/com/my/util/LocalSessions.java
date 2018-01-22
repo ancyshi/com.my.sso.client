@@ -9,7 +9,7 @@ import org.springframework.cache.annotation.*;
 
 public class LocalSessions {
 	// 存放所有局部会话
-	private static Map<String, HttpSession> sessions = new HashMap<String, HttpSession>();
+	public static Map<String, HttpSession> sessions = new HashMap<String, HttpSession>();
 
 	public static void addSession(String sessionId, HttpSession session) {
 		sessions.put(sessionId, session);

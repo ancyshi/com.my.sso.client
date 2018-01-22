@@ -13,6 +13,6 @@ import javax.servlet.http.HttpSession;
 public interface AbstractSession {
 	
 	// 生成session
-	public MySession generateSession(String sessionId, HttpSession session);
+	public LocalSession generateSession(String sessionId, HttpSession session);
 
 }

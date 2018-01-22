@@ -24,6 +24,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.alibaba.fastjson.JSONObject;
+import com.my.cache.CookieCache;
+import com.my.factory.AbstractFactory;
+import com.my.factory.LocalSession;
+import com.my.factory.SessionFactory;
 import com.my.util.LocalSessions;
 import com.my.util.MyHttpUtils;
 import com.my.util.ToolsUtil;
@@ -34,6 +38,11 @@ public class ClientController {
 	
 	@Autowired
 	private Environment env;
+	
+	@Resource
+	private CookieCache cookieCache;
+	
+	private AbstractFactory abstractFactory = new SessionFactory();
 	
 	private MyHttpUtils myHttpUtils = new MyHttpUtils();
 
@@ -62,20 +71,27 @@ public class ClientController {
 		String localSessionId = session.getId();
 		
 		// todo
-		LocalSessions.addSession(localSessionId, session);
-
+//		LocalSessions.addSession(localSessionId, session);
+		LocalSession localSession = (LocalSession) abstractFactory.generateSession(localSessionId, session);
+		LocalSession.localSessionMap.put(localSessionId, localSession.getHttpSession());
+		
 		// 采用cookie的方式记录下两个sessionId
 		Cookie localSessionCookie = new Cookie(request.getParameter("returnURL") +"SessionId", session.getId());
 		localSessionCookie.setPath("/");
+		localSessionCookie.setMaxAge(-1);
 		Cookie globalSessionCookie = new Cookie("globalSessionId", tokenInfo.getString("globalSessionId"));
 		globalSessionCookie.setPath("/");
+		globalSessionCookie.setMaxAge(-1);
 		response.addCookie(globalSessionCookie);
 		response.addCookie(localSessionCookie);
+		
+		cookieCache.add(request.getParameter("returnURL") +"SessionId", localSessionCookie);
+		cookieCache.add("globalSessionId", globalSessionCookie);
+		
 
 		// 验证token之后，重定向到请求的页面
 		String redirectURL = ToolsUtil.addressAppend("localhost", "8078","/thymeleaf/"+request.getParameter("returnURL"), null);
 		response.sendRedirect(redirectURL);
-//		response.sendRedirect("http://localhost:8078/thymeleaf/"+request.getParameter("returnURL"));
 		return null;
 	}
 
@@ -93,8 +109,8 @@ public class ClientController {
 		// serverName作为本应用标识
 		String tokenInfo = "";
 			 MyHttpUtils myHttpUtils = new MyHttpUtils();
-			JSONObject reqObj = new JSONObject();
-			reqObj.put("token", token);
+			 JSONObject reqObj = new JSONObject();
+			 reqObj.put("token", token);
 			 tokenInfo = myHttpUtils.httpPostJsonObj(verifyURL,reqObj,"utf-8");
 
 		return tokenInfo;

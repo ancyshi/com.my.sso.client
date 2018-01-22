@@ -12,11 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.alibaba.fastjson.JSONObject;
+import com.my.cache.CookieCache;
 import com.my.cache.StudentCache;
 import com.my.cache.TokenUtil;
 import com.my.model.TokenInfo;
@@ -34,6 +36,9 @@ public class ThymeleafController {
 
 	@Resource
 	private TokenUtil tokenUtil;
+	
+	@Resource
+	private CookieCache cookieCache;
 
 	@RequestMapping(value = "/app1")
 	public String pageLogin(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -43,12 +48,11 @@ public class ThymeleafController {
 		// 如果localSeeionId不存在，就重定向到SSOServer的接口/sso/page/login
 
 		// todo,这里不能仅仅使用空值来判断，存在问题。
-		if (app1SessionId == null) {
+		if (app1SessionId == null || cookieCache.getCookie(app1SessionId).equals("false")) {
 			// 重定向到认证中心
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("returnURL", "app1");
 			String redirectURL = ToolsUtil.addressAppend("localhost", "8077", "/server/page/login", map);
-			// response.sendRedirect("http://localhost:8077/server/page/login?returnURL=app1");
 			response.sendRedirect(redirectURL);
 			return null;
 		}
