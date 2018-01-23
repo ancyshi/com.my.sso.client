@@ -98,7 +98,7 @@ public class ClientController {
 		cookieCache.add(request.getParameter("returnURL") + "SessionId", localCookieId);
 
 		CookieId globalCookieId = new CookieId();
-		localCookieId.setCookiesId(tokenInfo.getString("globalSessionId"));
+		globalCookieId.setCookiesId(tokenInfo.getString("globalSessionId"));
 		cookieCache.add("globalSessionId", globalCookieId);
 
 		// 验证token之后，重定向到请求的页面
@@ -110,11 +110,9 @@ public class ClientController {
 
 	@RequestMapping(value = "/auth/logout")
 	public Long authLogout(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		String app1SessionId = ToolsUtil.getCookieValueByName(request, "app1SessionId");
-		LocalSession localSession = new LocalSession();
-		// localSession.deleteSession(app1SessionId);
 
-		// 再删除其他的登录信息
+		// 直接将cookie中与用户有关的cookid记录全部删除
+		cookieCache.delete("");
 
 		return null;
 	}

@@ -46,7 +46,7 @@ public class ThymeleafController {
 		// 如果localSeeionId不存在，就重定向到SSOServer的接口/sso/page/login
 
 		// todo,这里不能仅仅使用空值来判断，存在问题。
-		if (app1SessionId == null || cookieCache.getCookie(app1SessionId).equals("false")) {
+		if (app1SessionId != null && !cookieCache.getCookie(app1SessionId).equals("false")) {
 			// 重定向到认证中心
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("returnURL", "app1");
@@ -65,13 +65,12 @@ public class ThymeleafController {
 		String app2SessionId = ToolsUtil.getCookieValueByName(request, "app2SessionId");
 
 		// 如果localSeeionId不存在，就重定向到SSOServer的接口/sso/page/login
-		if (app2SessionId == null) {
+		if (app2SessionId == null || cookieCache.getCookie(app2SessionId).equals("false")) {
 
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("returnURL", "app2");
 			String redirectURL = ToolsUtil.addressAppend("localhost", "8077", "/server/page/login", map);
 			response.sendRedirect(redirectURL);
-			// response.sendRedirect("http://localhost:8077/server/page/login?returnURL=app2");
 			return null;
 
 		}

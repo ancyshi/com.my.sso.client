@@ -22,33 +22,43 @@ public class CookieCache {
 	// @Resource
 	private JedisPool jedisPool = new JedisPool();
 
-	@CachePut(key = "#key", value = "cookie")
+//	@CachePut(key = "#key", value = "cookie")
 	public String add(String key, CookieId cookieId) {
 		CookieId cookie = cookieIdJPA.save(cookieId);
 		return cookie.getCookiesId();
 	}
 
-	@Cacheable(value = "cookie", key = "#cookieId")
+//	@Cacheable(value = "cookie", key = "#cookieId")
 	public String getCookie(String cookieId) throws Exception {
-		return null;
+		CookieId cookie = cookieIdJPA.findOne(cookieId);
+		if (null == cookie) {
+			return "true";
+		} else {
+			return "false";
+		}
+//		return cookie.getCookiesId();
 	}
 
 	// @CachePut(key = "#key", value = "cookie")
 	public Boolean jedisAdd(String key, String value) {
 		Jedis jedis = jedisPool.getResource();
-		jedis.setex(key, 60, value);
+		jedis.set(key, value);
 		return true;
 	}
 
 	public String jedisGet(String key) {
 		Jedis jedis = jedisPool.getResource();
 		String value = jedis.get(key);
+		if (value == null) {
+			return "";
+		}
 		return value;
 	}
 
-	@CacheEvict(value = "cookie", key = "#key")
+//	@CacheEvict(value = "cookie", key = "#key")
 	public void delete(String key) {
-		// TODO Auto-generated method stub
+		cookieIdJPA.deleteAll();
+		return;
 
 	}
 
