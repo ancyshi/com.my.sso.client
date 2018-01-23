@@ -1,6 +1,8 @@
 package com.my.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
@@ -67,9 +69,6 @@ public class ClientController {
 		String localSessionId = session.getId();
 
 		// todo
-		// LocalSessions.addSession(localSessionId, session);
-		// LocalSession localSession = (LocalSession)
-		// abstractFactory.generateSession(localSessionId, session);
 		LocalSession localSession = (LocalSession) abstractFactory.generateSession();
 		localSession.setSessionIdStr(localSessionId);
 		localSession.setUserName(tokenInfo.getString("userName"));
@@ -80,9 +79,6 @@ public class ClientController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// LocalSession.localSessionMap.put(localSessionId,
-		// localSession.getHttpSession());
-
 		// 采用cookie的方式记录下两个sessionId
 		Cookie localSessionCookie = new Cookie(request.getParameter("returnURL") + "SessionId", localSessionId);
 		localSessionCookie.setPath("/");
@@ -110,10 +106,20 @@ public class ClientController {
 
 	@RequestMapping(value = "/auth/logout")
 	public Long authLogout(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String logOutSessionId = ToolsUtil.getCookieValueByName(request, "logOutSessionId");
 
+		// 如果localSeeionId不存在，就重定向到SSOServer的接口/sso/page/login
+		if (logOutSessionId == null || cookieCache.getCookie(logOutSessionId).equals("false")) {
+
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("returnURL", "auth/logout");
+			String redirectURL = ToolsUtil.addressAppend("localhost", "8077", "/server/page/login", map);
+			response.sendRedirect(redirectURL);
+			return null;
+
+		}
 		// 直接将cookie中与用户有关的cookid记录全部删除
 		cookieCache.delete("");
-
 		return null;
 	}
 

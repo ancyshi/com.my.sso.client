@@ -2,9 +2,6 @@ package com.my.cache;
 
 import javax.annotation.Resource;
 
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import redis.clients.jedis.Jedis;
@@ -22,21 +19,21 @@ public class CookieCache {
 	// @Resource
 	private JedisPool jedisPool = new JedisPool();
 
-//	@CachePut(key = "#key", value = "cookie")
+	// @CachePut(key = "#key", value = "cookie")
 	public String add(String key, CookieId cookieId) {
 		CookieId cookie = cookieIdJPA.save(cookieId);
 		return cookie.getCookiesId();
 	}
 
-//	@Cacheable(value = "cookie", key = "#cookieId")
+	// @Cacheable(value = "cookie", key = "#cookieId")
 	public String getCookie(String cookieId) throws Exception {
 		CookieId cookie = cookieIdJPA.findOne(cookieId);
 		if (null == cookie) {
-			return "true";
-		} else {
 			return "false";
+		} else {
+			return "true";
 		}
-//		return cookie.getCookiesId();
+		// return cookie.getCookiesId();
 	}
 
 	// @CachePut(key = "#key", value = "cookie")
@@ -55,7 +52,7 @@ public class CookieCache {
 		return value;
 	}
 
-//	@CacheEvict(value = "cookie", key = "#key")
+	// @CacheEvict(value = "cookie", key = "#key")
 	public void delete(String key) {
 		cookieIdJPA.deleteAll();
 		return;
