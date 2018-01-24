@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.my.util.SecurityUtils;
 import org.apache.http.client.ClientProtocolException;
 import org.codehaus.plexus.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,9 @@ public class ClientController {
 
 	@Resource
 	private LocalSessionCache localSessionCache;
+
+	@Resource
+	private SecurityUtils securityUtils;
 
 	private AbstractFactory abstractFactory = new SessionFactory();
 
