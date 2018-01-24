@@ -41,8 +41,6 @@ public class ClientController {
 	@Resource
 	private LocalSessionCache localSessionCache;
 
-	@Resource
-	private SecurityUtils securityUtils;
 
 	private AbstractFactory abstractFactory = new SessionFactory();
 
