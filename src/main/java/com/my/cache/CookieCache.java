@@ -13,6 +13,7 @@ import com.my.model.CookieId;
 @Service
 public class CookieCache {
 
+
 	@Resource
 	private CookieIdJPA cookieIdJPA;
 
