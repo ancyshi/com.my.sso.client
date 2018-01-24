@@ -104,24 +104,7 @@ public class ClientController {
 		return null;
 	}
 
-	@RequestMapping(value = "/auth/logout")
-	public Long authLogout(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		String logOutSessionId = ToolsUtil.getCookieValueByName(request, "logOutSessionId");
-
-		// 如果localSeeionId不存在，就重定向到SSOServer的接口/sso/page/login
-		if (logOutSessionId == null || cookieCache.getCookie(logOutSessionId).equals("false")) {
-
-			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("returnURL", "auth/logout");
-			String redirectURL = ToolsUtil.addressAppend("localhost", "8077", "/server/page/login", map);
-			response.sendRedirect(redirectURL);
-			return null;
-
-		}
-		// 直接将cookie中与用户有关的cookid记录全部删除
-		cookieCache.delete("");
-		return null;
-	}
+	
 
 	// 这个方法有出入
 	private String checkToken(String token, HttpServletRequest request) throws ClientProtocolException, IOException {
