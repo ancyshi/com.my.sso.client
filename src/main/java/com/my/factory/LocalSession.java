@@ -13,6 +13,8 @@ public class LocalSession implements AbstractSession {
 
 	private String sessionIdStr;
 
+	private String applicationName;
+
 	private String userName;
 
 	private String passWord;
@@ -45,17 +47,34 @@ public class LocalSession implements AbstractSession {
 		super();
 	}
 
-	public LocalSession(String sessionIdStr, String userName, String passWord) {
+	public LocalSession(String sessionIdStr, String userName, String passWord,String applicationName) {
 		super();
 		this.sessionIdStr = sessionIdStr;
 		this.userName = userName;
 		this.passWord = passWord;
+		this.applicationName = applicationName;
+	}
+
+	public String getApplicationName() {
+		return applicationName;
+	}
+
+	public void setApplicationName(String applicationName) {
+		this.applicationName = applicationName;
 	}
 
 	@Override
 	public String toString() {
-		return "{\"sessionIdStr\":\"" + sessionIdStr + "\", \"userName\":\"" + userName + "\", \"passWord\":\""
-				+ passWord + "\"} ";
+		final StringBuilder sb = new StringBuilder("{");
+		sb.append("\"sessionIdStr\":\"")
+				.append(sessionIdStr).append('\"');
+		sb.append(",\"applicationName\":\"")
+				.append(applicationName).append('\"');
+		sb.append(",\"userName\":\"")
+				.append(userName).append('\"');
+		sb.append(",\"passWord\":\"")
+				.append(passWord).append('\"');
+		sb.append('}');
+		return sb.toString();
 	}
-
 }
