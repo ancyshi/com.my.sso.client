@@ -41,18 +41,6 @@ public class ThymeleafController {
 	@RequestMapping(value = "/app1")
 	public String pageLogin(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-		String app1SessionId = ToolsUtil.getCookieValueByName(request, "app1SessionId");
-
-		// 如果localSeeionId不存在，或者已经退出了，就要去登录
-		if (app1SessionId == null || !cookieCache.getCookie(app1SessionId).equals("true")) {
-			// 重定向到认证中心
-			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("returnURL", "app1");
-			String redirectURL = ToolsUtil.addressAppend("localhost", "8077", "/server/page/login", map);
-			response.sendRedirect(redirectURL);
-			return null;
-		}
-
 		return "/app1";
 
 	}
@@ -60,39 +48,17 @@ public class ThymeleafController {
 	@RequestMapping(value = "/app2")
 	public String pageLogin2(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-		String app2SessionId = ToolsUtil.getCookieValueByName(request, "app2SessionId");
-
-		// 如果localSeeionId不存在，就重定向到SSOServer的接口/sso/page/login
-		if (app2SessionId == null || cookieCache.getCookie(app2SessionId).equals("false")) {
-
-			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("returnURL", "app2");
-			String redirectURL = ToolsUtil.addressAppend("localhost", "8077", "/server/page/login", map);
-			response.sendRedirect(redirectURL);
-			return null;
-
-		}
-
 		return "/app2";
 
 	}
 	
-	@RequestMapping(value = "/logout")
+	@RequestMapping(value = "/app3")
 	public String authLogout(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String logOutSessionId = ToolsUtil.getCookieValueByName(request, "logoutSessionId");
 
-		// 如果localSeeionId不存在，就重定向到SSOServer的接口/sso/page/login
-		if (logOutSessionId == null || cookieCache.getCookie(logOutSessionId).equals("false")) {
-
-			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("returnURL", "logout");
-			String redirectURL = ToolsUtil.addressAppend("localhost", "8077", "/server/page/login", map);
-			response.sendRedirect(redirectURL);
-			return null;
-
-		}
 		// 直接将cookie中与用户有关的cookid记录全部删除
-		cookieCache.delete("");
+		String globalSessionId = ToolsUtil.getCookieValueByName(request, "globalSessionId");
+		cookieCache.jpaDelete(globalSessionId);
 		return "logout";
 	}
 

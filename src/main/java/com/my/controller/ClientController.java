@@ -93,11 +93,11 @@ public class ClientController {
 
 		CookieId localCookieId = new CookieId();
 		localCookieId.setCookiesId(localSession.getSessionIdStr());
-		cookieCache.add(request.getParameter("returnURL") + "SessionId", localCookieId);
+//		cookieCache.add(request.getParameter("returnURL") + "SessionId", localCookieId);
 
 		CookieId globalCookieId = new CookieId();
 		globalCookieId.setCookiesId(tokenInfo.getString("globalSessionId"));
-		cookieCache.add("globalSessionId", globalCookieId);
+//		cookieCache.add("globalSessionId", globalCookieId);
 
 		// 验证token之后，重定向到请求的页面
 		String redirectURL = ToolsUtil.addressAppend("localhost", "8078",

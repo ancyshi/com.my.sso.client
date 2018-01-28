@@ -14,28 +14,30 @@ import com.my.model.CookieId;
 public class CookieCache {
 
 
-	@Resource
-	private CookieIdJPA cookieIdJPA;
+
 
 	// @Resource
 	private JedisPool jedisPool = new JedisPool();
 
-	// @CachePut(key = "#key", value = "cookie")
-	public String add(String key, CookieId cookieId) {
-		CookieId cookie = cookieIdJPA.save(cookieId);
-		return cookie.getCookiesId();
-	}
-
-	// @Cacheable(value = "cookie", key = "#cookieId")
-	public String getCookie(String cookieId) throws Exception {
-		CookieId cookie = cookieIdJPA.findOne(cookieId);
-		if (null == cookie) {
-			return "false";
-		} else {
-			return "true";
-		}
-		// return cookie.getCookiesId();
-	}
+	@Resource
+	private CookieIdJPA cookieIdJPA;
+//
+//	// @CachePut(key = "#key", value = "cookie")
+//	public String add(String key, CookieId cookieId) {
+//		CookieId cookie = cookieIdJPA.save(cookieId);
+//		return cookie.getCookiesId();
+//	}
+//
+//	// @Cacheable(value = "cookie", key = "#cookieId")
+//	public String getCookie(String cookieId) throws Exception {
+//		CookieId cookie = cookieIdJPA.findOne(cookieId);
+//		if (null == cookie) {
+//			return "false";
+//		} else {
+//			return "true";
+//		}
+//		// return cookie.getCookiesId();
+//	}
 
 	// @CachePut(key = "#key", value = "cookie")
 	public Boolean jedisAdd(String key, String value) {
@@ -55,9 +57,28 @@ public class CookieCache {
 
 	// @CacheEvict(value = "cookie", key = "#key")
 	public void delete(String key) {
-		cookieIdJPA.deleteAll();
+		Jedis jedis = jedisPool.getResource();
+		jedis.del(key);
 		return;
 
 	}
 
+	// 存储集合
+	public void jedisSAdd(String globalSessionId, String localSessionIdStr) {
+		Jedis jedis = jedisPool.getResource();
+		jedis.sadd(globalSessionId, localSessionIdStr);
+		return;
+	}
+
+	public void save(CookieId localCookieId) {
+		cookieIdJPA.save(localCookieId);
+	}
+
+	public CookieId getCookieId(String cookieId) {
+		return cookieIdJPA.getOne(cookieId);
+	}
+
+	public void jpaDelete(String globalSessionId) {
+		cookieIdJPA.jpaDelete(globalSessionId);
+	}
 }

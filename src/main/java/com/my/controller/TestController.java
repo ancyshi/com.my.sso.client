@@ -23,7 +23,7 @@ public class TestController {
 		// 产生临时的token
 		CookieId localCookieId = new CookieId();
 		localCookieId.setCookiesId("afefefe");
-		cookieCache.jedisAdd("fe", localCookieId.getCookiesId());
+		cookieCache.jedisSAdd("fe", localCookieId.getCookiesId());
 
 		// cookieCache.delete("fe");
 
