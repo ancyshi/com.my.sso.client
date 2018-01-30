@@ -13,9 +13,6 @@ import com.my.model.CookieId;
 @Service
 public class CookieCache {
 
-
-
-
 	// @Resource
 	private JedisPool jedisPool = new JedisPool();
 
@@ -75,7 +72,7 @@ public class CookieCache {
 	}
 
 	public CookieId getCookieId(String cookieId) {
-		return cookieIdJPA.getOne(cookieId);
+		return cookieIdJPA.jpaFindOne(cookieId);
 	}
 
 	public void jpaDelete(String globalSessionId) {
