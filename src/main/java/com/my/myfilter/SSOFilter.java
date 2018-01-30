@@ -7,6 +7,7 @@ import com.my.factory.AbstractFactory;
 import com.my.factory.LocalSession;
 import com.my.factory.SessionFactory;
 import com.my.model.CookieId;
+import com.my.util.CheckExceptionUtil;
 import com.my.util.MyHttpUtils;
 import com.my.util.SecurityUtils;
 import com.my.util.ToolsUtil;
@@ -39,9 +40,20 @@ public class SSOFilter  extends HttpServlet  implements Filter {
 
     private AbstractFactory abstractFactory = new SessionFactory();
 
+    // sso server服务器
+    private String serverHost ;
+
+    //  sso server 服务器的端口
+    private String serverPort ;
+
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
+        serverHost=env.getProperty("serverHost");
+        serverPort=env.getProperty("serverPort");
+
+        CheckExceptionUtil.checkString(serverHost, "sso server host is empty!");
+
 
     }
 

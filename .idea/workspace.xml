@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9efdd004-4f92-43e4-9879-a7844495e834" name="Default" comment="添加了过滤器和加密算法，未完成。">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/my/cache/CookieCache.java" afterPath="$PROJECT_DIR$/src/main/java/com/my/cache/CookieCache.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/my/dao/CookieIdJPA.java" afterPath="$PROJECT_DIR$/src/main/java/com/my/dao/CookieIdJPA.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/my/model/CookieId.java" afterPath="$PROJECT_DIR$/src/main/java/com/my/model/CookieId.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/my/myfilter/SSOFilter.java" afterPath="$PROJECT_DIR$/src/main/java/com/my/myfilter/SSOFilter.java" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -18,14 +14,41 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="450">
-      <file leaf-file-name="SSOFilter.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="SSOFilter.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/my/myfilter/SSOFilter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="149">
-              <caret line="74" column="0" lean-forward="false" selection-start-line="74" selection-start-column="0" selection-end-line="74" selection-end-column="0" />
+            <state relative-caret-position="473">
+              <caret line="54" column="32" lean-forward="false" selection-start-line="54" selection-start-column="32" selection-end-line="54" selection-end-column="32" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#2647#2663#0" expanded="true" />
+                <element signature="e#2982#2998#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CheckExceptionUtil.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/my/util/CheckExceptionUtil.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="162">
+              <caret line="6" column="26" lean-forward="true" selection-start-line="6" selection-start-column="26" selection-end-line="6" selection-end-column="26" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CommonUtil.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/my/util/CommonUtil.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="933">
+              <caret line="35" column="0" lean-forward="true" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
+              <folding>
+                <element signature="e#335#336#0" expanded="true" />
+                <element signature="e#404#405#0" expanded="true" />
+                <element signature="e#712#713#0" expanded="true" />
+                <element signature="e#751#752#0" expanded="true" />
+                <element signature="e#999#1000#0" expanded="true" />
+                <element signature="e#1060#1061#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -102,8 +125,8 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>s</find>
-      <find>verifyLocalSession</find>
       <find>show-sql</find>
+      <find>verifyLocalSession</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -129,11 +152,13 @@
         <option value="$PROJECT_DIR$/src/main/resources/templates/app2.html" />
         <option value="$PROJECT_DIR$/src/main/resources/templates/app1.html" />
         <option value="$PROJECT_DIR$/src/main/java/com/my/controller/ThymeleafController.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/my/myfilter/SSOFilter.java" />
         <option value="$PROJECT_DIR$/src/main/resources/application.properties" />
         <option value="$PROJECT_DIR$/src/main/java/com/my/dao/CookieIdJPA.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/my/cache/CookieCache.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/my/model/CookieId.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/my/util/CommonUtil.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/my/myfilter/SSOFilter.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/my/util/CheckExceptionUtil.java" />
       </list>
     </option>
   </component>
@@ -260,6 +285,15 @@
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="my" type="462c0819:PsiDirectoryNode" />
               <item name="myfilter" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="com.my.sso.client" type="b2602c69:ProjectViewProjectNode" />
+              <item name="com.my.sso.client" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="my" type="462c0819:PsiDirectoryNode" />
+              <item name="util" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="com.my.sso.client" type="b2602c69:ProjectViewProjectNode" />
@@ -735,7 +769,7 @@
       <workItem from="1516939842272" duration="18728000" />
       <workItem from="1517014233217" duration="17499000" />
       <workItem from="1517182972586" duration="942000" />
-      <workItem from="1517269286355" duration="2504000" />
+      <workItem from="1517269286355" duration="3456000" />
     </task>
     <task id="LOCAL-00001" summary="试试idea.">
       <created>1516772248712</created>
@@ -769,11 +803,10 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="63740000" />
+    <option name="totallyTimeSpent" value="64692000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-11" y="-11" width="1942" height="1042" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289941" sideWeight="0.50215983" order="7" side_tool="true" content_ui="tabs" />
@@ -784,7 +817,7 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28402367" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.040236685" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289941" sideWeight="0.49784017" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -881,20 +914,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/my/util/SecurityUtils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="8" column="0" lean-forward="true" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/com.my.sso.client.iml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="281">
-          <caret line="116" column="41" lean-forward="false" selection-start-line="116" selection-start-column="41" selection-end-line="116" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/my/myconfigure/FilterConfigure.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="336">
@@ -1320,12 +1339,35 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/my/myfilter/SSOFilter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="149">
-          <caret line="74" column="0" lean-forward="false" selection-start-line="74" selection-start-column="0" selection-end-line="74" selection-end-column="0" />
+        <state relative-caret-position="473">
+          <caret line="54" column="32" lean-forward="false" selection-start-line="54" selection-start-column="32" selection-end-line="54" selection-end-column="32" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2647#2663#0" expanded="true" />
+            <element signature="e#2982#2998#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/my/util/CommonUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="933">
+          <caret line="35" column="0" lean-forward="true" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
+          <folding>
+            <element signature="e#335#336#0" expanded="true" />
+            <element signature="e#404#405#0" expanded="true" />
+            <element signature="e#712#713#0" expanded="true" />
+            <element signature="e#751#752#0" expanded="true" />
+            <element signature="e#999#1000#0" expanded="true" />
+            <element signature="e#1060#1061#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/my/util/CheckExceptionUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="6" column="26" lean-forward="true" selection-start-line="6" selection-start-column="26" selection-end-line="6" selection-end-column="26" />
+          <folding />
         </state>
       </provider>
     </entry>
