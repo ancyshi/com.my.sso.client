@@ -12,6 +12,7 @@ import com.my.util.MyHttpUtils;
 import com.my.util.SecurityUtils;
 import com.my.util.ToolsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 
@@ -37,30 +38,28 @@ public class SSOFilter  extends HttpServlet  implements Filter {
     @Resource
     private LocalSessionCache localSessionCache;
 
+    // sso server服务器地址
+    @Value(value = "${ssoServerUrl:127.0.0.1:8077}")
+    private String ssoServerUrl ;
+
+    private  final  String tokenVerifyUri ="/server/auth/verify";
+
+    private final String pageLoginUri ="/server/page/login";
+
+    private  final String HTTPStr = "http://";
+
+    private final String HTTPSStr = "https://";
 
     private AbstractFactory abstractFactory = new SessionFactory();
 
-    // sso server服务器
-    private String serverHost ;
-
-    //  sso server 服务器的端口
-    private String serverPort ;
-
-
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-        serverHost=env.getProperty("serverHost");
-        serverPort=env.getProperty("serverPort");
-
-        CheckExceptionUtil.checkString(serverHost, "sso server host is empty!");
-
-
+    public void init(FilterConfig filterConfig) throws ServletException{
+        CheckExceptionUtil.checkString(ssoServerUrl, "sso server host is empty!");
     }
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
             //  验证是否有token，且有效
-
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
         String tokenStr = (String) request.getParameter("token");
@@ -69,7 +68,7 @@ public class SSOFilter  extends HttpServlet  implements Filter {
                 JSONObject tokenInfoObj = this.verify(tokenStr,request,response);
                 // 生成本地会话和全局会话，并且放到cookie中
                 if(!tokenInfoObj.getString("verifyResult").isEmpty() && tokenInfoObj.getString("verifyResult").equals("true")) {
-                    generateCookie(tokenInfoObj,request,response);
+                    addTokenToCookie(tokenInfoObj,request,response);
                     chain.doFilter(request, response);
                 }
                 return;
@@ -86,16 +85,22 @@ public class SSOFilter  extends HttpServlet  implements Filter {
             // 不存在就重定向到服务器端认证全局会话
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("returnURL", request.getRequestURI());
-            String redirectURL = ToolsUtil.addressAppend("localhost", "8077", "/server/page/login", map);
+            String redirectURL = ToolsUtil.addressAppend(HTTPStr, ssoServerUrl, pageLoginUri, map);
             response.sendRedirect(redirectURL);
     }
 
+    /**
+     * 如果token有效，那么就要创建本地会话，保存到cookie中
+     * @param tokenInfoObj
+     * @param httpRequest
+     * @param response
+     */
     private void
-    generateCookie(JSONObject tokenInfoObj, HttpServletRequest httpRequest, HttpServletResponse response) {
-        // 如有效简历本地会话
+    addTokenToCookie(JSONObject tokenInfoObj, HttpServletRequest httpRequest, HttpServletResponse response) {
 //        HttpSession session = httpRequest.getSession(true);
         String urlCodeString =SecurityUtils.getBase64(httpRequest.getAttribute("returnURL").toString());
-        // todo
+
+        // 工厂方法模式，生产一个localSession
         LocalSession localSession = (LocalSession) abstractFactory.generateSession();
         localSession.setSessionIdStr(urlCodeString);
         localSession.setApplicationName(httpRequest.getParameter("returnURL"));
@@ -107,8 +112,6 @@ public class SSOFilter  extends HttpServlet  implements Filter {
         localCookieId.setCookiesId(localSession.getSessionIdStr());
         localCookieId.setGlobalId( tokenInfoObj.getString("globalSessionId"));
         try {
-//            localSessionCache.cachePut(session.getId(), localSession);
-//            cookieCache.jedisAdd(SecurityUtils.getBase64(httpRequest.getAttribute("returnURL").toString()), localSession.getSessionIdStr());
                 cookieCache.save(localCookieId);
         } catch (Exception e) {
             // TODO Auto-generated catch block
@@ -123,9 +126,6 @@ public class SSOFilter  extends HttpServlet  implements Filter {
         globalSessionCookie.setMaxAge(-1);
         response.addCookie(globalSessionCookie);
         response.addCookie(localSessionCookie);
-
-        // key：全局会话，value:局部会话
-//        cookieCache.jedisSAdd(tokenInfoObj.getString("globalSessionId")+"1", localSession.getSessionIdStr());
     }
 
     /**
@@ -152,7 +152,8 @@ public class SSOFilter  extends HttpServlet  implements Filter {
     private JSONObject verify(String tokenStr, HttpServletRequest httpRequest, HttpServletResponse response) {
         // 向认证中心发送验证token请求
         // 去server端的接口/server/auth/verify验证token的有效性
-        String verifyURL = "http://" + env.getProperty("sso.server") + env.getProperty("sso.server.verify");
+//        String verifyURL = "http://" + env.getProperty("sso.server") + env.getProperty("sso.server.verify");
+        String verifyURL = "http://" + ssoServerUrl+ tokenVerifyUri;
         // serverName作为本应用标识
         MyHttpUtils myHttpUtils = new MyHttpUtils();
         JSONObject reqObj = new JSONObject();

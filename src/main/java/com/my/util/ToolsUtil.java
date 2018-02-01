@@ -69,10 +69,19 @@ public class ToolsUtil {
 	    return cookieMap;
 
 	}
-public static String addressAppend(String ip, String port,String address, Map<String,Object> params) {
-		
+
+	/**
+	 * 拼接成地址：
+	 * @param protocol 传输的协议类型，http://,https://
+	 * @param url {local}:{port}
+	 * @param uri "/page/login"
+	 * @param params
+	 * @return
+	 */
+	public static String addressAppend(String protocol , String url, String uri, Map<String,Object> params) {
+
 		StringBuffer addressURL = new StringBuffer();
-		addressURL.append("http://").append(ip).append(":").append(port).append(address);
+		addressURL.append(protocol).append(url).append(uri);
 		
 		if(!CollectionUtils.isEmpty(params)){
 			addressURL.append("?");
