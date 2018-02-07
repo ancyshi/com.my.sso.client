@@ -3,20 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="9efdd004-4f92-43e4-9879-a7844495e834" name="Default" comment="添加了过滤器和加密算法，未完成。">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/my/cache/StudentCache.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/my/controller/TestController.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/my/controller/ThymeleafController.java" afterPath="$PROJECT_DIR$/src/main/java/com/my/controller/ThymeleafController.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/my/dao/StudentJPA.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/my/factory/MySession.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/my/myfilter/SSOFilter.java" afterPath="$PROJECT_DIR$/src/main/java/com/my/myfilter/SSOFilter.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/my/util/CheckExceptionUtil.java" afterPath="$PROJECT_DIR$/src/main/java/com/my/util/CheckExceptionUtil.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/my/util/LocalSessionListener.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/my/util/LocalSessions.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/my/util/ToolsUtil.java" afterPath="$PROJECT_DIR$/src/main/java/com/my/util/ToolsUtil.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/my/util/ToolsUtilTest.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/my/controller/ThymeleafController.class" afterPath="$PROJECT_DIR$/target/classes/com/my/controller/ThymeleafController.class" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/my/util/LocalSessionListener.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/my/util/LocalSessions.class" afterPath="" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -81,8 +67,8 @@
       <file leaf-file-name="ThymeleafController.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/my/controller/ThymeleafController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-229">
-              <caret line="2" column="0" lean-forward="false" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+            <state relative-caret-position="594">
+              <caret line="22" column="5" lean-forward="false" selection-start-line="22" selection-start-column="5" selection-end-line="22" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -692,7 +678,7 @@
       <workItem from="1517182972586" duration="942000" />
       <workItem from="1517269286355" duration="3716000" />
       <workItem from="1517355974692" duration="3324000" />
-      <workItem from="1517442059310" duration="2889000" />
+      <workItem from="1517442059310" duration="3539000" />
     </task>
     <task id="LOCAL-00001" summary="试试idea.">
       <created>1516772248712</created>
@@ -726,7 +712,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="71165000" />
+    <option name="totallyTimeSpent" value="71815000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-11" y="-11" width="1942" height="1042" extended-state="6" />
@@ -748,10 +734,10 @@
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.36094674" sideWeight="0.49784017" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.36094674" sideWeight="0.49784017" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26295897" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26295897" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289941" sideWeight="0.49712643" order="1" side_tool="false" content_ui="tabs" />
@@ -1253,7 +1239,7 @@
         <state relative-caret-position="435">
           <caret line="50" column="47" lean-forward="true" selection-start-line="50" selection-start-column="47" selection-end-line="50" selection-end-column="47" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1396,8 +1382,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/my/controller/ThymeleafController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-229">
-          <caret line="2" column="0" lean-forward="false" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+        <state relative-caret-position="594">
+          <caret line="22" column="5" lean-forward="false" selection-start-line="22" selection-start-column="5" selection-end-line="22" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
